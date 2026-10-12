@@ -1,0 +1,795 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Découvrez les portraits, mariages et événements photographiés par Élite Studio à Bamako.">
+  <title>Galerie | Élite Studio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --black: #0b0a08;
+      --gold: #d5ad55;
+      --cream: #f4eee2;
+      --muted: #a9a39a;
+      --line: rgba(213, 173, 85, .28);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* Navigation */
+    .navbar {
+      min-height: 76px;
+      padding: 18px 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+      background: #0b0a08;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      font-size: 22px;
+      letter-spacing: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .nav-links a {
+      transition: color .25s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold);
+    }
+
+    .booking-link {
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 12px 16px;
+    }
+
+    /* Intro */
+    .intro {
+      padding: 90px 7% 48px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 7vw, 78px);
+      font-weight: 500;
+      line-height: 1.08;
+      margin-bottom: 20px;
+    }
+
+    h1 span {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .intro p {
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto;
+      line-height: 1.9;
+      font-size: 14px;
+    }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 12px 6% 48px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid #39342a;
+      color: #c9c1b5;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: .25s;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #0b0a08;
+    }
+
+    /* Photo grid */
+    .gallery {
+      width: 86%;
+      max-width: 1500px;
+      margin: 0 auto 100px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .photo-card {
+      position: relative;
+      overflow: hidden;
+      background: #17140f;
+      border: 1px solid var(--line);
+      min-width: 0;
+      animation: appear .45s ease both;
+    }
+
+    .photo-card.hidden {
+      display: none;
+    }
+
+    .photo-button {
+      display: block;
+      width: 100%;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: zoom-in;
+      text-align: left;
+      color: inherit;
+    }
+
+    .photo-card img {
+      display: block;
+      width: 100%;
+      height: 390px;
+      object-fit: cover;
+      transition: transform .6s ease, filter .6s ease;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.045);
+      filter: brightness(.72);
+    }
+
+    .photo-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .photo-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      font-size: 19px;
+    }
+
+    .photo-info span {
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* Empty state */
+    .empty {
+      display: none;
+      text-align: center;
+      color: var(--muted);
+      padding: 30px 15px 90px;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, .94);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      display: block;
+      max-width: 90vw;
+      max-height: 82vh;
+      object-fit: contain;
+      border: 1px solid var(--gold);
+    }
+
+    .close-lightbox {
+      position: absolute;
+      top: 20px;
+      right: 28px;
+      background: transparent;
+      color: white;
+      border: 0;
+      font-size: 38px;
+      cursor: pointer;
+    }
+
+    .lightbox-caption {
+      position: absolute;
+      bottom: 18px;
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    /* Footer */
+    footer {
+      padding: 36px 7%;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    footer strong {
+      color: var(--gold);
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 90%;
+        gap: 16px;
+      }
+
+      .photo-card img {
+        height: 340px;
+      }
+
+      .navbar {
+        padding: 16px 5%;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .nav-links {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 16px;
+        font-size: 10px;
+      }
+
+      .intro {
+        padding: 65px 6% 35px;
+      }
+
+      .filters {
+        padding-bottom: 32px;
+        gap: 8px;
+      }
+
+      .filter-btn {
+        padding: 10px 12px;
+        font-size: 9px;
+      }
+
+      .gallery {
+        width: 90%;
+        grid-template-columns: 1fr;
+        gap: 22px;
+        margin-bottom: 65px;
+      }
+
+      .photo-card img {
+        height: auto;
+        aspect-ratio: 4 / 5;
+      }
+
+      .lightbox {
+        padding: 15px;
+      }
+
+      .lightbox img {
+        max-width: 94vw;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <a class="brand" href="index.html" aria-label="Retour à l'accueil">
+      <!-- Vérifie le nom du fichier du logo dans ton dossier assets -->
+      <img src="assets/elite-studio-logo.jpeg" alt="Logo Élite Studio">
+    </a>
+
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="galerie.html" class="active">Galerie</a>
+      <a href="index.html#reservation" class="booking-link">Réserver</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="eyebrow">Édition photographique · Bamako</div>
+      <h1>Nos images,<br><span>vos histoires.</span></h1>
+      <p>
+        Chaque portrait raconte une histoire. Découvrez l'univers
+        d'Élite Studio à travers nos portraits, mariages et événements.
+      </p>
+    </section>
+
+    <nav class="filters" aria-label="Filtrer les photos">
+      <button class="filter-btn active" data-filter="all" aria-pressed="true">Toutes les photos</button>
+    </nav>
+
+    <section class="gallery" id="gallery" aria-label="Galerie de photos">
+
+      <!-- Remplace les exemples par tes propres photos.
+           Catégories disponibles : portrait, mariage, evenement, studio. -->
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Portrait signature">
+            <img src="assets/Photo 1.jpeg" alt="Portrait signature" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Portrait signature</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Regard intense">
+            <img src="assets/Photo 2.jpeg" alt="Regard intense" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Regard intense</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="studio">
+        <button class="photo-button" data-title="Lumière dorée">
+            <img src="assets/Photo 3.jpeg" alt="Lumière dorée" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Lumière dorée</h2>
+            <span>Studio</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Beauté naturelle">
+            <img src="assets/Photo 4.jpeg" alt="Beauté naturelle" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Beauté naturelle</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="evenement">
+        <button class="photo-button" data-title="Instant précieux">
+            <img src="assets/Photo 5.jpeg" alt="Instant précieux" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Instant précieux</h2>
+            <span>Événement</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Élégance pure">
+            <img src="assets/Photo 6.jpeg" alt="Élégance pure" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Élégance pure</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="mariage">
+        <button class="photo-button" data-title="Amour éternel">
+            <img src="assets/Photo 7.jpeg" alt="Amour éternel" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Amour éternel</h2>
+            <span>Mariage</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="studio">
+        <button class="photo-button" data-title="Style affirmé">
+            <img src="assets/Photo 8.jpeg" alt="Style affirmé" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Style affirmé</h2>
+            <span>Studio</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Charme discret">
+            <img src="assets/Photo 9.jpeg" alt="Charme discret" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Charme discret</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="evenement">
+        <button class="photo-button" data-title="Joie partagée">
+            <img src="assets/Photo 10.jpeg" alt="Joie partagée" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Joie partagée</h2>
+            <span>Événement</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Expression libre">
+            <img src="assets/Photo 11.jpeg" alt="Expression libre" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Expression libre</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="studio">
+        <button class="photo-button" data-title="Art du contraste">
+            <img src="assets/Photo 12.jpeg" alt="Art du contraste" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Art du contraste</h2>
+            <span>Studio</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="mariage">
+        <button class="photo-button" data-title="Promesse d'amour">
+            <img src="assets/Photo 13.jpeg" alt="Promesse d'amour" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Promesse d'amour</h2>
+            <span>Mariage</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Beauté intemporelle">
+            <img src="assets/Photo 14.jpeg" alt="Beauté intemporelle" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Beauté intemporelle</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="evenement">
+        <button class="photo-button" data-title="Souvenirs vivants">
+            <img src="assets/Photo 15.jpeg" alt="Souvenirs vivants" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Souvenirs vivants</h2>
+            <span>Événement</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="studio">
+        <button class="photo-button" data-title="Signature artistique">
+            <img src="assets/Photo 17.jpeg" alt="Signature artistique" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Signature artistique</h2>
+            <span>Studio</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="evenement">
+        <button class="photo-button" data-title="Fête mémorable">
+            <img src="assets/Photo 20.jpeg" alt="Fête mémorable" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Fête mémorable</h2>
+            <span>Événement</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="L'instant présent">
+            <img src="assets/Photo 21.jpeg" alt="L'instant présent" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>L'instant présent</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="studio">
+        <button class="photo-button" data-title="Éclat subtil">
+            <img src="assets/Photo 22.jpeg" alt="Éclat subtil" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Éclat subtil</h2>
+            <span>Studio</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="mariage">
+        <button class="photo-button" data-title="Un jour unique">
+            <img src="assets/Photo 29.jpeg" alt="Un jour unique" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Un jour unique</h2>
+            <span>Mariage</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="evenement">
+        <button class="photo-button" data-title="Célébration">
+            <img src="assets/Photo 30.jpeg" alt="Célébration" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Célébration</h2>
+            <span>Événement</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Regard authentique">
+            <img src="assets/Photo 31.jpeg" alt="Regard authentique" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Regard authentique</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="studio">
+        <button class="photo-button" data-title="Élégance en studio">
+            <img src="assets/Photo 32.jpeg" alt="Élégance en studio" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Élégance en studio</h2>
+            <span>Studio</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Moment de grâce">
+            <img src="assets/Photo 33.jpeg" alt="Moment de grâce" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Moment de grâce</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="mariage">
+        <button class="photo-button" data-title="Souvenir précieux">
+            <img src="assets/Photo 34.jpeg" alt="Souvenir précieux" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Souvenir précieux</h2>
+            <span>Mariage</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="studio">
+        <button class="photo-button" data-title="Portrait premium">
+            <img src="assets/Photo 37.jpeg" alt="Portrait premium" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Portrait premium</h2>
+            <span>Studio</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="portrait">
+        <button class="photo-button" data-title="Style et caractère">
+            <img src="assets/Photo 38.jpeg" alt="Style et caractère" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>Style et caractère</h2>
+            <span>Portrait</span>
+        </div>
+        </article>
+
+        <article class="photo-card" data-category="mariage">
+        <button class="photo-button" data-title="L'amour en image">
+            <img src="assets/Photo 39.jpeg" alt="L'amour en image" loading="lazy">
+        </button>
+        <div class="photo-info">
+            <h2>L'amour en image</h2>
+            <span>Mariage</span>
+        </div>
+        </article>
+
+    </section>
+
+    <p class="empty" id="empty">Aucune photo dans cette catégorie pour le moment.</p>
+  </main>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo agrandie">
+    <button class="close-lightbox" id="closeLightbox" aria-label="Fermer">&times;</button>
+    <img id="lightboxImage" src="" alt="">
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+  </div>
+
+  <footer>
+    <p>© <span id="year"></span> <strong>ÉLITE STUDIO</strong> — Tous droits réservés.</p>
+    <a href="index.html">Retour à l'accueil ↗</a>
+  </footer>
+
+  <script>
+    // Filtrage des photos
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const photoCards = document.querySelectorAll(".photo-card");
+    const emptyMessage = document.getElementById("empty");
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const category = button.dataset.filter;
+        let visibleCount = 0;
+
+        filterButtons.forEach(item => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-pressed", String(active));
+        });
+
+        photoCards.forEach(card => {
+          const visible =
+            category === "all" || card.dataset.category === category;
+
+          card.classList.toggle("hidden", !visible);
+
+          if (visible) visibleCount++;
+        });
+
+        emptyMessage.style.display = visibleCount === 0 ? "block" : "none";
+      });
+    });
+
+    // Affichage d'une photo en grand
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+    const closeLightbox = document.getElementById("closeLightbox");
+
+    document.querySelectorAll(".photo-button").forEach(button => {
+      button.addEventListener("click", () => {
+        const image = button.querySelector("img");
+
+        lightboxImage.src = image.src;
+        lightboxImage.alt = image.alt;
+        lightboxCaption.textContent = button.dataset.title || image.alt;
+
+        lightbox.classList.add("open");
+        closeLightbox.focus();
+      });
+    });
+
+    function closePhoto() {
+      lightbox.classList.remove("open");
+      lightboxImage.src = "";
+    }
+
+    closeLightbox.addEventListener("click", closePhoto);
+
+    lightbox.addEventListener("click", event => {
+      if (event.target === lightbox) closePhoto();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closePhoto();
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
